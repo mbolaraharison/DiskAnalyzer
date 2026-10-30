@@ -1,0 +1,16 @@
+# SwiftPM build output
+.build/
+.swiftpm/
+
+# Bundle produced by bundle.sh
+DiskAnalyzer.app/
+
+# Xcode (if the package is opened in Xcode)
+xcuserdata/
+DerivedData/
+
+# macOS
+.DS_Store
+
+# Release zip produced in CI
+DiskAnalyzer.zip
