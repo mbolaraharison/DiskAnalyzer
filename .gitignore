@@ -12,5 +12,5 @@ DerivedData/
 # macOS
 .DS_Store
 
-# Release zip produced in CI
-DiskAnalyzer.zip
+# Disk image produced by bundle.sh
+DiskAnalyzer.dmg

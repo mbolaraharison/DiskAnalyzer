@@ -1,5 +1,6 @@
 #!/bin/sh
-# Builds DiskAnalyzer.app (universal release binary + Info.plist + AppIcon.icns) and installs it into /Applications.
+# Builds DiskAnalyzer.app (universal release binary + Info.plist + AppIcon.icns) and DiskAnalyzer.dmg,
+# then installs the app into /Applications.
 # Usage: ./bundle.sh [--no-install]   (CI uses --no-install)
 set -e
 cd "$(dirname "$0")"
@@ -36,6 +37,13 @@ cat > "$APP/Contents/Info.plist" <<'EOF'
 EOF
 codesign --force --sign - "$APP"   # ad-hoc signature (no Developer ID); required to launch on Apple Silicon
 echo "Built $PWD/$APP"
+
+# Drag-to-install disk image: the app next to a shortcut to /Applications.
+STAGE="$(mktemp -d)"
+ditto "$APP" "$STAGE/$APP"
+ln -s /Applications "$STAGE/Applications"
+hdiutil create -quiet -volname "Disk Analyzer" -srcfolder "$STAGE" -ov -format UDZO DiskAnalyzer.dmg
+echo "Built $PWD/DiskAnalyzer.dmg"
 [ "$1" = "--no-install" ] && exit 0
 
 DEST="/Applications/$APP"
